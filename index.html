@@ -531,6 +531,9 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
 
+    /* Trust row lives only on mobile portrait — desktop hero stays untouched */
+    .hero-trust-row { display: none; }
+
     @media (min-width: 900px) and (orientation: landscape) {
       .hero-fullbleed-wrapper { min-height: 85vh; }
       .hero-video-bg { object-position: right center; }
@@ -571,6 +574,25 @@
         padding-top: 14px;
         padding-bottom: 30px;
         justify-content: flex-start;
+        position: relative;
+        top: -2vh; /* follow the lifted tooth: keeps headline overlapping it */
+      }
+      /* Mobile-only trust row: fills the lower hero with proof, not decoration */
+      .hero-trust-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .hero-trust-stars {
+        color: var(--gold-primary);
+        font-size: 0.82rem;
+        letter-spacing: 2px;
+      }
+      .hero-trust-text {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text-muted);
       }
       .hero-headline {
         font-size: clamp(2.1rem, 7.5vw, 2.7rem);
@@ -2113,7 +2135,7 @@
         </h1>
 
         <p class="hero-subhead hero-subhead-anim">
-          Specialist-led cosmetic and restorative dentistry, with porcelain veneers, clear aligners, dental implants, and gentle root canal care — personalised for you in Keshav Puram, New Delhi.
+          Specialist-led cosmetic dentistry in Keshav Puram, New Delhi — porcelain veneers, clear aligners, dental implants &amp; gentle root canal care.
         </p>
 
         <div class="hero-specialty-tags" aria-label="Key Clinical Disciplines">
@@ -2121,6 +2143,11 @@
           <span class="specialty-tag stag-tag st-2">Clear Aligners</span>
           <span class="specialty-tag stag-tag st-3">Dental Implants</span>
           <span class="specialty-tag stag-tag st-4">Root Canal Care</span>
+        </div>
+
+        <div class="hero-trust-row" aria-label="Patient rating">
+          <span class="hero-trust-stars" aria-hidden="true">★★★★★</span>
+          <span class="hero-trust-text">200+ Google reviews</span>
         </div>
       </div>
     </div>
@@ -3709,8 +3736,11 @@
         var t = Math.max(0, (sp - 0.6) / 0.4);    // last 40% of scroll
         t = t * t * (3 - 2 * t);                  // smoothstep
         var mobileShiftX = isMobile ? -cw * 0.52 : 0;
+        // Mobile: lift the frame so the tooth sits higher — removes the dead
+        // cream band between the header and the tooth on portrait phones.
+        var mobileShiftY = isMobile ? -ch * 0.09 : 0;
         ctx.save();
-        ctx.translate(cw / 2 + mobileShiftX, ch / 2);
+        ctx.translate(cw / 2 + mobileShiftX, ch / 2 + mobileShiftY);
         ctx.rotate(rot);
         ctx.drawImage(img, -dw / 2, -dh / 2, dw, dh);
         ctx.restore();
